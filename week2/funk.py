@@ -86,13 +86,7 @@ y = 5 # Global variabel
 #        -- helper_functions.py
 #    -- README.md
 
-
-
-
-
-
-
-def say_hello(user_name, extra_message=""): # Function definition, extra_message is optional parameter
+def say_hello(user_name, extra_message="No message"): # extra_message is optional parameter
     print(f"Hello user {user_name} - {extra_message}")
 
 def get_name_length(name):
@@ -112,7 +106,7 @@ len2 = len(name2)
 print(f"Length of name {name2} is: {len2}")
 
 name3 = "Isak"
-say_hello(name3)
+say_hello()
 
 print()
 print("Hello world")
