@@ -1,6 +1,4 @@
-# Lesson 01
-
-This folder contains materials for Lesson 01 of the Python course.
+# Vecka 1
 
 ## Contents
 - Add your lesson materials here
