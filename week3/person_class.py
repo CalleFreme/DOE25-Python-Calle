@@ -41,7 +41,6 @@ class Person:
         return self.name
     
 
-
 p1 = Person("Calle", 31)
 p2 = Person("Anna", 25)
 p3 = Person("Bertil", 40)

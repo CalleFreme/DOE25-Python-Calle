@@ -5,7 +5,7 @@
 # Loop för menyn
 # Menyn har 3 val: 1. Add Student 2. List students 3. Quit
 
-from studentregister_funcs import print_main_menu
+from studentregister_funcs import print_main_menu, add_new_student
 
 test_student = {"name": "Adam", "age": "21"}
 test_student2 = {"name": "Calle", "age": "22"}
@@ -31,10 +31,7 @@ def main():
         menu_choice = input("Choose 1-3: ")
 
         if menu_choice == "1":
-            new_student_name = input("New student name: ")
-            new_student_age = input("New student age: ")
-            new_student_dict = {"name": new_student_name, "age": new_student_age}
-            student_list.append(new_student_dict)
+            updated_student_list, new_student_dict = add_new_student(student_list)
 
             print()
             print("New student created:")
@@ -42,8 +39,6 @@ def main():
             print()
             #print(f"Age: {new_student_dict["age"]}")
             # How to deal with nested strings:
-
-
 
         elif menu_choice == "2":
             index = 0

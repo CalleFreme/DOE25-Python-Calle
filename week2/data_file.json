@@ -1,0 +1,12 @@
+[
+  {"name": "Adam", "age": 21, "city": "Stockholm"},
+  {"name": "Eve", "age": 22, "city": "Gothenburg"},
+  {"name": "John", "age": 23, "city": "Malmo"},
+  {"name": "Jane", "age": 20, "city": "Uppsala"},
+  {"name": "Mike", "age": 24, "city": "Vasteras"},
+  {"name": "Alice", "age": 21, "city": "Orebro"},
+  {"name": "Bob", "age": 22, "city": "Linkoping"},
+  {"name": "Charlie", "age": 23, "city": "Helsingborg"},
+  {"name": "Diana", "age": 20, "city": "Norrkoping"},
+  {"name": "Ethan", "age": 24, "city": "Jonkoping"}
+]
