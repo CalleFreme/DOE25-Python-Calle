@@ -1,0 +1,5 @@
+i,5000,Salary,test description,2023-10-15
+e,1500,Rent,test description,2023-10-12
+e,600,Food,test description,2023-10-20
+i,700,Salary,test description,2023-10-21
+i,200,Salary,test description,2023-10-22
