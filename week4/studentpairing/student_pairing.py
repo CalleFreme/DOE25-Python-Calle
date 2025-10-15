@@ -87,8 +87,8 @@ def write_pairs_to_file(pairs, filename):
 
 def main():
     """Main function to orchestrate the pairing process."""
-    input_file = "students_onsite.txt"
-    output_file = "student_pairs_onsite.txt"
+    input_file = "students.txt"
+    output_file = "student_pairs.txt"
     
     print("Student Pairing Script")
     print("-" * 25)
