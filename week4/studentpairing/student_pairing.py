@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Student Pairing Script
-Reads student names from students.txt and creates random pairs.
-Outputs the pairings to student_pairs.txt
+Student Grouping Script
+Reads student names from students.txt and creates random groups of specified size.
+Outputs the groups to student_pairs.txt (or student_groups.txt for larger groups).
 
 GIVET: A list of student names in a text file (students.txt), one name per line.
-SÖKT: A text file (student_pairs.txt) listing the randomly created pairs.
+SÖKT: A text file listing the randomly created groups with user-specified group size.
 """
 
 import random
@@ -35,49 +35,60 @@ def read_students(filename):
         return []
 
 
-def create_pairs(students):
-    """Create random pairs from a list of students."""
+def create_groups(students, group_size=2):
+    """Create random groups from a list of students with specified group size."""
+    if group_size < 1:
+        raise ValueError("Group size must be at least 1")
+    
     # Make a copy to avoid modifying the original list
     student_list = students.copy()
     
     # Shuffle the list randomly
     random.shuffle(student_list)
     
-    pairs = [] # Will have structure: [ (name1, name2), (name3, name4), ... ]
+    groups = [] # Will have structure: [ [name1, name2, ...], [name3, name4, ...], ... ]
     
-    # Create pairs from the shuffled list
-    # range(start, stop, step)
-    for i in range(0, len(student_list), 2): # i goes 0, 2, 4, ..., len-1 or len-2
-        if i + 1 < len(student_list):
-            # Normal pair
-            pairs.append((student_list[i], student_list[i + 1])) # pair is a tuple (name1, name2)
-        else:
-            # Odd number of students - last student gets paired with "No partner"
-            pairs.append((student_list[i], "No partner"))
+    # Create groups from the shuffled list
+    for i in range(0, len(student_list), group_size):
+        group = student_list[i:i + group_size]
+        groups.append(group)
     
-    return pairs
+    return groups
 
 
-def write_pairs_to_file(pairs, filename):
-    """Write the student pairs to a text file."""
+def write_groups_to_file(groups, filename, group_size):
+    """Write the student groups to a text file."""
     try:
         with open(filename, 'w', encoding='utf-8') as file:
             # Write header with timestamp
-            file.write(f"Student Pairs - Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            file.write("=" * 60 + "\n\n")
+            group_name = "Pairs" if group_size == 2 else "Groups"
+            file.write(f"Student {group_name} - Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            file.write("=" * 60 + "\n")
+            file.write(f"Group size: {group_size}\n\n")
             
-            # Write pairs
-            for i, (student1, student2) in enumerate(pairs, 1):
-                file.write(f"Pair {i:2d}: {student1:<15} - {student2}\n")
+            # Write groups
+            for i, group in enumerate(groups, 1):
+                if group_size == 2 and len(group) == 2:
+                    # Special formatting for pairs (backwards compatibility)
+                    file.write(f"Pair {i:2d}: {group[0]:<15} - {group[1]}\n")
+                elif group_size == 2 and len(group) == 1:
+                    # Single student in a pair
+                    file.write(f"Pair {i:2d}: {group[0]:<15} - No partner\n")
+                else:
+                    # General group formatting
+                    file.write(f"Group {i:2d}: {', '.join(group)}\n")
             
-            # pair = (name1, name2)
-            # Could be (name1, "No partner")
-            file.write(f"\nTotal pairs: {len(pairs)}")
-            if any(pair[1] == "No partner" for pair in pairs):
-                file.write(" (1 student without pair)")
-            file.write("\n")
+            # Write summary
+            total_students = sum(len(group) for group in groups)
+            file.write(f"\nTotal groups: {len(groups)}\n")
+            file.write(f"Total students: {total_students}\n")
+            
+            # Check for incomplete groups
+            incomplete_groups = [group for group in groups if len(group) < group_size]
+            if incomplete_groups:
+                file.write(f"Incomplete groups: {len(incomplete_groups)}\n")
         
-        print(f"Pairs successfully written to '{filename}'")
+        print(f"Groups successfully written to '{filename}'")
         return True
         
     except Exception as e:
@@ -85,12 +96,27 @@ def write_pairs_to_file(pairs, filename):
         return False
 
 
+def get_group_size():
+    """Get the desired group size from user input."""
+    while True:
+        try:
+            size = input("Enter group size (default is 2 for pairs): ").strip()
+            if not size:  # Empty input, use default
+                return 2
+            size = int(size)
+            if size < 1:
+                print("Group size must be at least 1. Please try again.")
+                continue
+            return size
+        except ValueError:
+            print("Please enter a valid number.")
+
+
 def main():
-    """Main function to orchestrate the pairing process."""
+    """Main function to orchestrate the grouping process."""
     input_file = "students.txt"
-    output_file = "student_pairs.txt"
     
-    print("Student Pairing Script")
+    print("Student Grouping Script")
     print("-" * 25)
     
     # Read students from file
@@ -102,31 +128,53 @@ def main():
         return
     
     print(f"Found {len(students)} students:")
-    # Range gives a list of numbers from 0 to len(students)
-    #for i in range(len(students)):
-    #    print(f"  {i + 1:2d}. {students[i]}")
-
-    # Enumerate gives both index and value
-    for i, student in enumerate(students, 1): # i starts at 1, student is the name
+    for i, student in enumerate(students, 1):
         print(f"  {i:2d}. {student}")
     
-    # Create random pairs
-    print(f"\nCreating random pairs...")
-    pairs = create_pairs(students)
+    # Get desired group size
+    print()
+    group_size = get_group_size()
     
-    # Display pairs on screen
-    print(f"\nGenerated pairs:")
-    for i, (student1, student2) in enumerate(pairs, 1):
-        print(f"  Pair {i:2d}: {student1:<15} - {student2}")
+    # Determine output filename
+    if group_size == 2:
+        output_file = "student_pairs.txt"
+    else:
+        output_file = "student_groups.txt"
     
-    # Write pairs to file
-    print(f"\nWriting pairs to '{output_file}'...")
-    success = write_pairs_to_file(pairs, output_file)
+    # Create random groups
+    group_name = "pairs" if group_size == 2 else "groups"
+    print(f"\nCreating random {group_name} of size {group_size}...")
+    groups = create_groups(students, group_size)
+    
+    # Display groups on screen
+    print(f"\nGenerated {group_name}:")
+    for i, group in enumerate(groups, 1):
+        if group_size == 2 and len(group) == 2:
+            print(f"  Pair {i:2d}: {group[0]:<15} - {group[1]}")
+        elif group_size == 2 and len(group) == 1:
+            print(f"  Pair {i:2d}: {group[0]:<15} - No partner")
+        else:
+            members = ", ".join(group)
+            print(f"  Group {i:2d}: {members}")
+    
+    # Show summary
+    total_complete_groups = len([g for g in groups if len(g) == group_size])
+    incomplete_groups = len([g for g in groups if len(g) < group_size])
+    
+    print(f"\nSummary:")
+    print(f"  Total students: {len(students)}")
+    print(f"  Complete {group_name}: {total_complete_groups}")
+    if incomplete_groups > 0:
+        print(f"  Incomplete groups: {incomplete_groups}")
+    
+    # Write groups to file
+    print(f"\nWriting {group_name} to '{output_file}'...")
+    success = write_groups_to_file(groups, output_file, group_size)
     
     if success:
-        print("\nPairing complete! ✓")
+        print(f"\nGrouping complete! ✓")
     else:
-        print("\nThere was an error writing the pairs to file. ✗")
+        print(f"\nThere was an error writing the {group_name} to file. ✗")
 
 
 if __name__ == "__main__":
