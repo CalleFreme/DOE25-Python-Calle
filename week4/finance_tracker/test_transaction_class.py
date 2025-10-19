@@ -69,7 +69,7 @@ class TestTransaction:
         """Test __lt__ method compares transactions by date."""
         earlier = Transaction("i", 1000, "salary", date="2023-10-10")
         later = Transaction("e", 500, "food", date="2023-10-15")
-        
+
         assert earlier < later
         assert not later < earlier
 
@@ -77,7 +77,7 @@ class TestTransaction:
         """Test __lt__ method with same dates."""
         trans1 = Transaction("i", 1000, "salary", date="2023-10-15")
         trans2 = Transaction("e", 500, "food", date="2023-10-15")
-        
+
         assert not trans1 < trans2
         assert not trans2 < trans1
 
@@ -85,21 +85,21 @@ class TestTransaction:
         """Test __eq__ method with same date and amount."""
         trans1 = Transaction("i", 1000, "salary", date="2023-10-15")
         trans2 = Transaction("e", 1000, "bonus", date="2023-10-15")
-        
+
         assert trans1 == trans2
 
     def test_equality_same_date_different_amount(self):
         """Test __eq__ method with same date but different amounts."""
         trans1 = Transaction("i", 1000, "salary", date="2023-10-15")
         trans2 = Transaction("e", 500, "food", date="2023-10-15")
-        
+
         assert not trans1 == trans2
 
     def test_equality_different_date_same_amount(self):
         """Test __eq__ method with different dates but same amounts."""
         trans1 = Transaction("i", 1000, "salary", date="2023-10-10")
         trans2 = Transaction("e", 1000, "food", date="2023-10-15")
-        
+
         assert not trans1 == trans2
 
     def test_sorting_transactions(self):
@@ -130,7 +130,7 @@ class TestTransaction:
         """Test that transaction properties can be accessed and modified."""
         transaction = Transaction("i", 1000, "salary")
         original_amount = transaction.amount
-        
+
         # Properties should be accessible
         assert transaction.amount == original_amount
 

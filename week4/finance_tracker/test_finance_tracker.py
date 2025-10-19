@@ -27,9 +27,9 @@ class TestFinanceTracker:
         """Test adding a transaction to an empty list."""
         transaction = Transaction("i", 1000, "salary")
         transactions = []
-        
+
         result = add_transaction(transaction, transactions)
-        
+
         assert len(result) == 1
         assert result[0] == transaction
         assert result is transactions  # Should modify the original list
@@ -39,9 +39,9 @@ class TestFinanceTracker:
         existing_transaction = Transaction("e", 500, "food")
         new_transaction = Transaction("i", 1000, "salary")
         transactions = [existing_transaction]
-        
+
         result = add_transaction(new_transaction, transactions)
-        
+
         assert len(result) == 2
         assert result[0] == existing_transaction
         assert result[1] == new_transaction
@@ -56,7 +56,7 @@ class TestFinanceTracker:
         """Test balance calculation with only income transactions."""
         transactions = [
             Transaction("i", "1000", "salary"),
-            Transaction("i", "500", "bonus")
+            Transaction("i", "500", "bonus"),
         ]
         balance = calculate_balance(transactions)
         assert balance == 1500
@@ -65,7 +65,7 @@ class TestFinanceTracker:
         """Test balance calculation with only expense transactions."""
         transactions = [
             Transaction("e", "200", "food"),
-            Transaction("e", "300", "transport")
+            Transaction("e", "300", "transport"),
         ]
         balance = calculate_balance(transactions)
         assert balance == -500
@@ -87,9 +87,9 @@ class TestFinanceTracker:
         mock_transaction = MagicMock()
         mock_transaction.type = "i"
         mock_transaction.amount = "invalid"
-        
+
         transactions = [mock_transaction]
-        
+
         with patch("builtins.print") as mock_print:
             balance = calculate_balance(transactions)
             assert balance == 0
@@ -117,21 +117,21 @@ class TestFinanceTracker:
         """Test show_transactions_history function."""
         transactions = [
             Transaction("i", "1000", "salary", date="2023-10-10"),
-            Transaction("e", "200", "food", date="2023-10-15")
+            Transaction("e", "200", "food", date="2023-10-15"),
         ]
-        
+
         show_transactions_history(transactions)
         captured = capsys.readouterr()
-        
+
         # Should print sorted transactions (reverse order)
-        assert captured.out.count('\n') >= 2  # At least some newlines
+        assert captured.out.count("\n") >= 2  # At least some newlines
         # The function prints the sorted list, so we just check it doesn't crash
 
     def test_show_main_menu(self, capsys):
         """Test show_main_menu function displays all menu options."""
         show_main_menu()
         captured = capsys.readouterr()
-        
+
         assert "Welcome to your Finance Tracker" in captured.out
         assert "1. Add transaction" in captured.out
         assert "2. Show financial status" in captured.out
@@ -149,19 +149,19 @@ class TestFileOperations:
         mock_file_content = """i,5000,Salary,test description,2023-10-15
 e,1500,Rent,test description,2023-10-12
 e,600,Food,test description,2023-10-20"""
-        
-        with patch('builtins.open', mock_open(read_data=mock_file_content)):
+
+        with patch("builtins.open", mock_open(read_data=mock_file_content)):
             transactions = read_financial_data_from_file()
-            
+
             assert len(transactions) == 3
-            
+
             # Check first transaction
             assert transactions[0].type == "i"
             assert transactions[0].amount == "5000"
             assert transactions[0].category == "Salary"
             assert transactions[0].descr == "test description"
             assert transactions[0].date == "2023-10-15"
-            
+
             # Check second transaction
             assert transactions[1].type == "e"
             assert transactions[1].amount == "1500"
@@ -169,18 +169,18 @@ e,600,Food,test description,2023-10-20"""
 
     def test_read_financial_data_file_not_found(self, capsys):
         """Test reading financial data when file doesn't exist."""
-        with patch('builtins.open', side_effect=FileNotFoundError):
+        with patch("builtins.open", side_effect=FileNotFoundError):
             transactions = read_financial_data_from_file()
-            
+
             assert transactions == []
             captured = capsys.readouterr()
             assert "File could not be read." in captured.out
 
     def test_read_financial_data_io_error(self, capsys):
         """Test reading financial data with IO error."""
-        with patch('builtins.open', side_effect=IOError("Permission denied")):
+        with patch("builtins.open", side_effect=IOError("Permission denied")):
             transactions = read_financial_data_from_file()
-            
+
             assert transactions == []
             captured = capsys.readouterr()
             assert "File could not be read." in captured.out
@@ -189,24 +189,24 @@ e,600,Food,test description,2023-10-20"""
         """Test successful writing of financial data to file."""
         transactions = [
             Transaction("i", "1000", "salary", "Monthly pay", "2023-10-15"),
-            Transaction("e", "200", "food", "Groceries", "2023-10-16")
+            Transaction("e", "200", "food", "Groceries", "2023-10-16"),
         ]
-        
+
         mock_file = mock_open()
-        with patch('builtins.open', mock_file):
+        with patch("builtins.open", mock_file):
             write_financial_data_to_file(transactions)
-            
+
             # Check that file was opened for writing
-            mock_file.assert_called_once_with("transaction_data.txt", 'w')
-            
+            mock_file.assert_called_once_with("transaction_data.txt", "w")
+
             # Check that correct data was written
             written_calls = mock_file().write.call_args_list
             assert len(written_calls) == 2
-            
+
             # Check first transaction line
             first_line = written_calls[0][0][0]
             assert "i,1000,salary,Monthly pay,2023-10-15" in first_line
-            
+
             # Check second transaction line
             second_line = written_calls[1][0][0]
             assert "e,200,food,Groceries,2023-10-16" in second_line
@@ -214,23 +214,23 @@ e,600,Food,test description,2023-10-20"""
     def test_write_financial_data_io_error(self, capsys):
         """Test writing financial data with IO error."""
         transactions = [Transaction("i", "1000", "salary")]
-        
-        with patch('builtins.open', side_effect=IOError("Disk full")):
+
+        with patch("builtins.open", side_effect=IOError("Disk full")):
             write_financial_data_to_file(transactions)
-            
+
             captured = capsys.readouterr()
             assert "File could not be written." in captured.out
 
     def test_write_financial_data_empty_list(self):
         """Test writing empty transaction list."""
         transactions = []
-        
+
         mock_file = mock_open()
-        with patch('builtins.open', mock_file):
+        with patch("builtins.open", mock_file):
             write_financial_data_to_file(transactions)
-            
+
             # Should still open file but write nothing
-            mock_file.assert_called_once_with("transaction_data.txt", 'w')
+            mock_file.assert_called_once_with("transaction_data.txt", "w")
             mock_file().write.assert_not_called()
 
 
@@ -240,19 +240,19 @@ class TestIntegration:
     def test_add_and_calculate_balance_integration(self):
         """Test integration between add_transaction and calculate_balance."""
         transactions = []
-        
+
         # Add some transactions
         transaction1 = Transaction("i", "1000", "salary")
         transaction2 = Transaction("e", "300", "food")
         transaction3 = Transaction("i", "200", "bonus")
-        
+
         transactions = add_transaction(transaction1, transactions)
         transactions = add_transaction(transaction2, transactions)
         transactions = add_transaction(transaction3, transactions)
-        
+
         # Calculate balance
         balance = calculate_balance(transactions)
-        
+
         assert balance == 900  # 1000 - 300 + 200
         assert len(transactions) == 3
 
@@ -260,36 +260,45 @@ class TestIntegration:
         """Test writing transactions to file and reading them back."""
         original_transactions = [
             Transaction("i", "1500", "salary", "Work", "2023-10-15"),
-            Transaction("e", "250", "food", "Lunch", "2023-10-16")
+            Transaction("e", "250", "food", "Lunch", "2023-10-16"),
         ]
-        
+
         # Create temporary file
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as temp_file:
+        with tempfile.NamedTemporaryFile(
+            mode="w", delete=False, suffix=".txt"
+        ) as temp_file:
             temp_filename = temp_file.name
-        
+
         try:
             # Patch the filename in both functions
-            with patch('finance_tracker.open', mock_open()) as mock_file:
+            with patch("finance_tracker.open", mock_open()) as mock_file:
                 # Write transactions
                 write_financial_data_to_file(original_transactions)
-                
+
                 # Simulate the file content that would be written
                 written_content = ""
                 for call in mock_file().write.call_args_list:
                     written_content += call[0][0]
-                
+
                 # Now mock reading that content back
-                with patch('finance_tracker.open', mock_open(read_data=written_content)):
+                with patch(
+                    "finance_tracker.open", mock_open(read_data=written_content)
+                ):
                     read_transactions = read_financial_data_from_file()
-                    
+
                     # Should have same number of transactions
                     assert len(read_transactions) == len(original_transactions)
-                    
+
                     # Check first transaction data matches
                     assert read_transactions[0].type == original_transactions[0].type
-                    assert read_transactions[0].amount == original_transactions[0].amount
-                    assert read_transactions[0].category == original_transactions[0].category
-                    
+                    assert (
+                        read_transactions[0].amount == original_transactions[0].amount
+                    )
+                    assert (
+                        read_transactions[0].category
+                        == original_transactions[0].category
+                    )
+
         finally:
             # Clean up temp file
             if os.path.exists(temp_filename):

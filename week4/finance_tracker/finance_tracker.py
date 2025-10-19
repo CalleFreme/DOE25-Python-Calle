@@ -24,6 +24,7 @@ import datetime
 # Date format: YYYY-MM-DD
 # Example: 2023-10-15
 
+
 def add_transaction(transaction, transactions=[]):
     transactions.append(transaction)
     print(f"Added transaction: {transaction}")
@@ -68,6 +69,7 @@ def show_budgets():
 def start_budget_monitoring():
     pass
 
+
 def read_financial_data_from_file():
     transactions = []
     try:
@@ -105,6 +107,7 @@ def write_financial_data_to_file(transactions):
                 transaction_file.write(transaction_line)
     except IOError:
         print("File could not be written.")
+
 
 def show_main_menu():
     print("Welcome to your Finance Tracker")
