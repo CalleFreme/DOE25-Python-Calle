@@ -10,10 +10,15 @@ from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
 
-from finance_tracker import (add_transaction, calculate_balance,
-                             read_financial_data_from_file, show_balance,
-                             show_main_menu, show_transactions_history,
-                             write_financial_data_to_file)
+from finance_tracker import (
+    add_transaction,
+    calculate_balance,
+    read_financial_data_from_file,
+    show_balance,
+    show_main_menu,
+    show_transactions_history,
+    write_financial_data_to_file
+)
 from transaction_class import Transaction
 
 
