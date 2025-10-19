@@ -4,20 +4,17 @@ Tests core functionality including transaction management, balance calculation,
 file operations, and menu functions.
 """
 
-import pytest
 import os
 import tempfile
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import MagicMock, mock_open, patch
+
+import pytest
+
+from finance_tracker import (add_transaction, calculate_balance,
+                             read_financial_data_from_file, show_balance,
+                             show_main_menu, show_transactions_history,
+                             write_financial_data_to_file)
 from transaction_class import Transaction
-from finance_tracker import (
-    add_transaction,
-    calculate_balance,
-    show_balance,
-    show_transactions_history,
-    read_financial_data_from_file,
-    write_financial_data_to_file,
-    show_main_menu,
-)
 
 
 class TestFinanceTracker:

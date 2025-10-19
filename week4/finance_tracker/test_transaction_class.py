@@ -5,6 +5,7 @@ initialization, string representations, comparison methods, and sign calculation
 """
 
 import pytest
+
 from transaction_class import Transaction
 
 

@@ -16,10 +16,10 @@
 # Transactions
 # Budget
 
-from transaction_class import Transaction
-
 # from transaction_class import *
 import datetime
+
+from transaction_class import Transaction
 
 # Date format: YYYY-MM-DD
 # Example: 2023-10-15
