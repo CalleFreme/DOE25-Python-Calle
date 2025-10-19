@@ -17,7 +17,7 @@ from finance_tracker import (
     show_balance,
     show_main_menu,
     show_transactions_history,
-    write_financial_data_to_file
+    write_financial_data_to_file,
 )
 from transaction_class import Transaction
 
