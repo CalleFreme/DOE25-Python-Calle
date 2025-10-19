@@ -17,8 +17,10 @@
 # Budget
 
 from transaction_class import Transaction
-#from transaction_class import *
+
+# from transaction_class import *
 import datetime
+
 # Date format: YYYY-MM-DD
 # Example: 2023-10-15
 
@@ -27,13 +29,14 @@ def add_transaction(transaction, transactions=[]):
     print(f"Added transaction: {transaction}")
     return transactions
 
+
 def calculate_balance(transactions):
     # Show balance/saldo
     balance = 0
     try:
         for transaction in transactions:
-            transaction_type = transaction.type # "i" or "e"
-            amount = transaction.amount # amount in kr
+            transaction_type = transaction.type  # "i" or "e"
+            amount = transaction.amount  # amount in kr
             if transaction_type == "i":
                 balance += int(amount)
             else:
@@ -42,8 +45,10 @@ def calculate_balance(transactions):
         print("Invalid transaction data.")
     return balance
 
+
 def show_balance(balance):
     print(f"Your balance is {balance}")
+
 
 def show_transactions_history(transactions):
     print()
@@ -51,11 +56,14 @@ def show_transactions_history(transactions):
     print(sorted_transactions)
     print()
 
+
 def create_budget():
     pass
 
+
 def show_budgets():
     pass
+
 
 def start_budget_monitoring():
     pass
@@ -63,8 +71,10 @@ def start_budget_monitoring():
 def read_financial_data_from_file():
     transactions = []
     try:
-        with open("transaction_data.txt", 'r') as transaction_file:
-            transaction_lines = transaction_file.readlines() # readlines() returns a list of lines
+        with open("transaction_data.txt", "r") as transaction_file:
+            transaction_lines = (
+                transaction_file.readlines()
+            )  # readlines() returns a list of lines
             for transaction in transaction_lines:
                 # Strip removes whitespace/newline, split creates a list by splitting the string at every ","
                 transaction_info = transaction.strip().split(",")
@@ -78,15 +88,18 @@ def read_financial_data_from_file():
                     transaction_amount,
                     transaction_category,
                     transaction_descr,
-                    transaction_date)
-                transactions.append(new_transaction)  
-        return transactions          
+                    transaction_date,
+                )
+                transactions.append(new_transaction)
+        return transactions
     except IOError:
         print("File could not be read.")
+        return []
+
 
 def write_financial_data_to_file(transactions):
     try:
-        with open("transaction_data.txt", 'w') as transaction_file:
+        with open("transaction_data.txt", "w") as transaction_file:
             for transaction in transactions:
                 transaction_line = f"{transaction.type},{transaction.amount},{transaction.category},{transaction.descr},{transaction.date}\n"
                 transaction_file.write(transaction_line)
@@ -103,8 +116,9 @@ def show_main_menu():
     print("6. Quit")
 
 
-#def handle_input():
+# def handle_input():
 #    pass
+
 
 def main():
     transactions = read_financial_data_from_file()
@@ -115,12 +129,18 @@ def main():
             menu_choice = input("Choose menu option 1-6: ")
             match menu_choice:
                 case "1":
-                    transaction_type = input("Type of transaction ((i)ncome/(e)xpense): ").strip().lower()
+                    transaction_type = (
+                        input("Type of transaction ((i)ncome/(e)xpense): ")
+                        .strip()
+                        .lower()
+                    )
                     amount = input("Transaction amount (kr): ")
                     category = input("Category (Food/Transport/Salary/Rent): ").lower()
                     description = input("Optional description: ")
                     date = input("Optional date for transaction: ")
-                    new_transaction = Transaction(transaction_type, amount, category, description, date)
+                    new_transaction = Transaction(
+                        transaction_type, amount, category, description, date
+                    )
                     transactions = add_transaction(new_transaction, transactions)
                     valid_input = True
                 case "2":
@@ -144,5 +164,5 @@ def main():
                     print("Invalid choice, please choose again.")
 
 
-
-main()
+if __name__ == "__main__":
+    main()

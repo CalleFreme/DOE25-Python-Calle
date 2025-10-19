@@ -10,13 +10,13 @@ import tempfile
 from unittest.mock import patch, mock_open, MagicMock
 from transaction_class import Transaction
 from finance_tracker import (
-    add_transaction, 
-    calculate_balance, 
+    add_transaction,
+    calculate_balance,
     show_balance,
     show_transactions_history,
     read_financial_data_from_file,
     write_financial_data_to_file,
-    show_main_menu
+    show_main_menu,
 )
 
 
@@ -76,7 +76,7 @@ class TestFinanceTracker:
             Transaction("i", "1000", "salary"),
             Transaction("e", "200", "food"),
             Transaction("i", "500", "bonus"),
-            Transaction("e", "150", "transport")
+            Transaction("e", "150", "transport"),
         ]
         balance = calculate_balance(transactions)
         assert balance == 1150  # 1000 - 200 + 500 - 150
@@ -90,7 +90,7 @@ class TestFinanceTracker:
         
         transactions = [mock_transaction]
         
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             balance = calculate_balance(transactions)
             assert balance == 0
             mock_print.assert_called_with("Invalid transaction data.")

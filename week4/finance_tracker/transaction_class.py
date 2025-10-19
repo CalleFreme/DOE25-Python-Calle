@@ -1,4 +1,6 @@
 import datetime
+
+
 class Transaction:
 
     def __init__(self, type, amount, category, descr=None, date="00-00-00"):
@@ -11,7 +13,7 @@ class Transaction:
 
     def __str__(self):
         return f"{self.date} {self.category}: {self.sign}{self.amount}kr"
-    
+
     def __repr__(self):
         return f"{self.date} {self.category}: {self.sign}{self.amount}kr"
 

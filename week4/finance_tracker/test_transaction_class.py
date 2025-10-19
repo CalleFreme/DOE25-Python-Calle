@@ -14,7 +14,7 @@ class TestTransaction:
     def test_init_with_all_parameters(self):
         """Test Transaction initialization with all parameters provided."""
         transaction = Transaction("i", 1000, "salary", "Monthly salary", "2023-10-15")
-        
+
         assert transaction.type == "i"
         assert transaction.amount == 1000
         assert transaction.category == "salary"
@@ -25,7 +25,7 @@ class TestTransaction:
     def test_init_with_defaults(self):
         """Test Transaction initialization with default values."""
         transaction = Transaction("e", 500, "food")
-        
+
         assert transaction.type == "e"
         assert transaction.amount == 500
         assert transaction.category == "food"
@@ -107,11 +107,11 @@ class TestTransaction:
         transactions = [
             Transaction("i", 1000, "salary", date="2023-10-15"),
             Transaction("e", 200, "food", date="2023-10-10"),
-            Transaction("e", 500, "rent", date="2023-10-12")
+            Transaction("e", 500, "rent", date="2023-10-12"),
         ]
-        
+
         sorted_transactions = sorted(transactions)
-        
+
         assert sorted_transactions[0].date == "2023-10-10"
         assert sorted_transactions[1].date == "2023-10-12"
         assert sorted_transactions[2].date == "2023-10-15"
@@ -133,7 +133,7 @@ class TestTransaction:
         
         # Properties should be accessible
         assert transaction.amount == original_amount
-        
+
         # Can be modified (not enforcing immutability in current design)
         transaction.amount = 1500
         assert transaction.amount == 1500
