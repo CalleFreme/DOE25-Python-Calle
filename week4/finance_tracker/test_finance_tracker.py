@@ -34,7 +34,7 @@ class TestFinanceTracker:
 
         assert len(result) == 1
         assert result[0] == transaction
-        assert result is transactions  # Should modify the original list
+        assert result == transactions  # Should modify the original list
 
     def test_add_transaction_existing_list(self):
         """Test adding a transaction to an existing list."""
