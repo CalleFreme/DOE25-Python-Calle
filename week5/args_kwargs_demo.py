@@ -1,11 +1,51 @@
 """
 args_kwargs_demo.py
 
-Demonstrates *args and **kwargs usage, how to accept arbitrary positional
-and keyword arguments, and patterns for forwarding arguments. Includes
-examples and best-practices notes.
+func(*args, **kwargs)
 
-Run as: python args_kwargs_demo.py
+Varför finns dessa?
+
+Hantera funktioner med flexibelt antal argument
+
+Bygg mer återanvändbar och skalbar kod
+
+Vanligt i bibliotek, API:er, loggningsfunktioner
+
+*args
+
+Tar emot ett godtyckligt antal positionella argument
+
+"""
+def add_all(*numbers):
+    return sum(numbers)
+"""
+
+**kwargs
+
+Tar emot godtyckligt antal namngivna argument (dictionary)
+
+"""
+def print_user_info(**info):
+    for key, value in info.items():
+        print(f"{key}: {value}")
+"""
+
+När ska de användas?
+
+När antalet parametrar inte är bestämt i förväg
+
+Vid konfiguration, logging, plugin-arkitektur
+
+För att skriva generella funktioner
+
+Fallgrop
+
+Överanvänd inte - kan göra koden svårare att förstå om det inte är nödvändigt
+
+På ren svenska:
+När används *args? När du inte vet hur många argument.
+När används **kwargs? När parametrar är valfria/named/konfigurerbara.
+
 """
 
 from typing import Any
@@ -19,6 +59,7 @@ def greet(greeting, *names):
     for name in names:
         print(f"{greeting} {name}")
 
+greet("Hej", "Calle", "Anna", "Bob")
 
 def make_config(**kwargs):
     """Demonstrates **kwargs: return a configuration dict with defaults.
